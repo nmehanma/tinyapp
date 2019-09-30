@@ -9,6 +9,10 @@ app.set("view engine", "ejs");
 
 //use res.render to load up an ejs view file
 
+app.get("/urls/new", (req, res) => {
+  res.render("urls_new");
+});
+
 app.get('/urls', (req,res)=> {
   let templateVars = {urls: urlDatabase };
   res.render("urls_index", templateVars);
