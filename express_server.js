@@ -3,7 +3,16 @@ const app = express();
 
 const PORT = 8080; // default port 8080
 
+//set the view engine to ejs
+
 app.set("view engine", "ejs");
+
+//use res.render to load up an ejs view file
+
+app.get('/urls', (req,res)=> {
+  let templateVars = {urls: urlDatabase };
+  res.render("urls_index", templateVars);
+})
 
 
 const urlDatabase = {
@@ -11,6 +20,7 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 
 };
+
 
 app.get("/", (req, res)=> {
   res.send("Hello!");
