@@ -92,6 +92,12 @@ app.post("/urls",(req,res) => {
   res.redirect("/urls/" + shortURL)
 });
 
+//updates url resource 
+app.post("/urls/:shortURL/edit",(req, res)=> {
+  urlDatabase[req.params.shortURL] = req.body.longURL;
+   
+  res.redirect("/urls")
+})
 //Removes a URL resource from the URL database
 
 app.post("/urls/:shortURL/delete",(req,res)=> {
@@ -101,11 +107,8 @@ app.post("/urls/:shortURL/delete",(req,res)=> {
 
 })
 
-app.post("/urls/shortURL/submit",(req, res)=> {
 
 
-  res.redirect("/urls")
-})
 
 
 
