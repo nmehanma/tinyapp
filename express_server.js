@@ -101,6 +101,12 @@ app.post("/urls/:shortURL/delete",(req,res)=> {
 
 })
 
+app.post("/urls/shortURL/submit",(req, res)=> {
+
+
+  res.redirect("/urls")
+})
+
 
 
 //listening on port 80 and is logging a statement back to user to confirm  
