@@ -26,19 +26,19 @@
             <th scope= "col">Delete</th>
           </tr>
         </thead>
-        <form method="POST" action="/urls/9sm5xK/delete">
         <tbody>
           <% for(let url in urls) { %>
-          <tr>
-            <td><%=url%></td> 
-            <td><%=urls[url]%></td>
-            <td><button>Delete</button></td>
-           
-
+            <tr>
+              <td><%=url%></td> 
+              <td><%=urls[url]%></td>
+              <td>
+                <form style= "" method="POST" action="/urls/<%= url %>/delete">
+                  <button style="border: 5px solid red" type="submit">Delete</button>
+                </form>
+              </td>
           </tr>
-        <% } %>
         </tbody>
-      </form>
+        <% } %>
       </table>
     </main>
 

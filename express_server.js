@@ -92,6 +92,15 @@ app.post("/urls",(req,res) => {
   res.redirect("/urls/" + shortURL)
 });
 
+//Removes a URL resource from the URL database
+
+app.post("/urls/:shortURL/delete",(req,res)=> {
+  delete urlDatabase[req.params.shortURL]
+
+  res.redirect("/urls");
+
+})
+
 
 
 //listening on port 80 and is logging a statement back to user to confirm  
