@@ -30,11 +30,20 @@ app.set("view engine", "ejs");
 
 //use res.render to load up an ejs view file
 
+
+// user wanting to login
+
+app.get("/login",(req, res)=> {
+
+  res.render("urls_new")
+  
+})
 //our server responds by getting the "urls_new" template to display to the client generating the HTML via res.render
 
-app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
-});
+
+// app.get("/urls/new", (req, res) => {
+//   res.render("urls_new");
+// });
 
 app.get('/urls', (req,res)=> {
   let templateVars = {urls: urlDatabase };
@@ -45,6 +54,7 @@ app.get("/urls/:shortURL", (req, res) => {
   let templateVars = {shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]}
   res.render("urls_show",templateVars)
 });
+
 
 //the database that contains the urls
 const urlDatabase = {
@@ -106,6 +116,8 @@ app.post("/urls/:shortURL/delete",(req,res)=> {
   res.redirect("/urls");
 
 })
+
+
 
 
 
