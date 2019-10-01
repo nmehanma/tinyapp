@@ -14,11 +14,22 @@
         </div>
       </div>
       <div>
+        <% if (username) { %>
+        <p>Logged in as : <%=username %></p>
+
+        <!-- <% %> -->
+
+        <form method="Post" action="/logout">
+        <button type ="submit">Log out</button>
+        </form>
         
-        <form method="POST" action="login">
+        <% } else { %>
+        <form method="POST" action="/login">
           <input name="username">
           <button type="submit">Login</button>
         </form>
+
+        <% } %>
       
       </div>
       
