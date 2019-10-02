@@ -63,6 +63,14 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show",templateVars)
 });
 
+app.get("/register",(req,res)=> {
+
+  let templateVars = {username: null};
+
+  res.render("urls_register.ejs",templateVars);
+
+});
+
 
 //the database that contains the urls
 const urlDatabase = {
@@ -137,6 +145,11 @@ app.post("/logout",(req,res)=> {
   res.clearCookie("username", req.body.username);
 
   res.redirect("/urls");
+})
+
+app.post("/register",(req,res)=> {
+
+
 })
 
 
