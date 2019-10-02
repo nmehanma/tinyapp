@@ -86,7 +86,7 @@ app.get("/urls/:shortURL", (req, res) => {
   let user = users[req.cookies.user_ID]
   let templateVars = {shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], 
     user, 
-    username:req.cookies["username"]}
+    }
   res.render("urls_show",templateVars)
 });
 
@@ -261,7 +261,7 @@ app.post("/login",(req,res)=>{
     
   } else {
 
-    res.cookie("username", IDlookup(res.body.email));
+    res.cookie("username", iDlookup(res.body.email));
 
   }
   
@@ -271,7 +271,7 @@ app.post("/login",(req,res)=>{
 
 app.post("/logout",(req,res)=> {
 
-  res.clearCookie("username",);
+  res.clearCookie("user_id",);
 
   res.redirect("/urls");
 })
