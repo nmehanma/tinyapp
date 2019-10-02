@@ -43,34 +43,20 @@ app.set("view engine", "ejs");
 //our server responds by getting the "urls_new" template to display to the client generating the HTML via res.render
 
 
-// app.get("/urls/new", (req, res) => {
-//   res.render("urls_new");
-// });
+//global object database that contains => users
 
-app.get('/urls', (req,res)=> {
-  // console.log(req.cookies)
-  let templateVars = {
-
-    urls: urlDatabase,
-    username: req.cookies.username,
-
-   };
-  res.render("urls_index", templateVars);
-})
-
-app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = {shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username:req.cookies["username"]}
-  res.render("urls_show",templateVars)
-});
-
-app.get("/register",(req,res)=> {
-
-  let templateVars = {username: null};
-
-  res.render("urls_register.ejs",templateVars);
-
-});
-
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example",
+    password: "purple-monkey-dinosaur"
+  },
+  "user2RandomID": {
+    id: "user2RandomID",
+    email:"user2@example",
+    password: "dishwasher-funk"
+  }
+};
 
 //the database that contains the urls
 const urlDatabase = {
@@ -78,6 +64,134 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 
 };
+// app.get("/urls/new", (req, res) => {
+//   res.render("urls_new");
+// });
+
+
+app.get('/urls', (req,res)=> {
+  // console.log(req.cookies)
+  let user = users[req.cookies.user_ID]
+  let templateVars = {
+
+    urls: urlDatabase,
+    user
+
+   };
+  res.render("urls_index", templateVars);
+  });
+
+
+app.get("/urls/:shortURL", (req, res) => {
+  let user = users[req.cookies.user_ID]
+  let templateVars = {shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], 
+    user, 
+    username:req.cookies["username"]}
+  res.render("urls_show",templateVars)
+});
+
+app.get("/register",(req,res)=> {
+  let user = users[req.cookies.user_ID]
+  let templateVars = {
+  user
+  };
+    res.render("urls_register.ejs",templateVars);
+  
+});
+
+app.get("/login",(req,res)=> {
+  let user = users[req.cookies.user_ID]
+  let templateVars = {
+  user
+  };
+  
+  res.render("urls_login.ejs",templateVars)
+});
+
+
+// adding to global object users similar to what we did with adding urlDatabase
+
+
+// const users = {
+//   "userRandomID": {
+//     id: "userRandomID",
+//     email: "user@example",
+//     password: "purple-monkey-dinosaur"
+//   },
+//   "user2RandomID": {
+//     id: "user2RandomID",
+//     email:"user2@example",
+//     password: "dishwasher-funk"
+//   }
+// };
+
+const emailLookup = function(email) {
+
+  for(let user in users) {
+    if(email === users[user].email)
+    return true
+  }
+
+return false
+};
+
+const passwordLookup = function(password) {
+
+  for(let user in users) {
+    if(password === users[user].password)
+    return true
+  }
+  return false
+};
+
+const iDlookup = function(email) {
+  for (let user in users) {
+    if(email  === users[user].email) {
+    return users[user].id
+    }
+  } 
+  return false
+}
+  
+
+ 
+
+  // for (let user in users) {
+  //   if (users[user].email === req.body.email) {
+  //     isUserExist = true;
+  //   }
+
+app.post("/register",(req,res)=> {
+  console.log(req.body)
+  if(req.body.email === "" || req.body.password === "") {
+    res.status(400).send("invalid")
+  } else if (emailLookup(req.body.email)) {
+    res.status(400).send("exists")
+  
+}
+  else {
+  let randomID = generateRandomString(6);
+  users[randomID] = {id:randomID, email:req.body.email, password:req.body.password}
+
+  console.log(req.body);
+  
+  res.cookie("user_ID", randomID);
+  res.redirect("/urls");
+
+  }
+});
+
+  
+
+ 
+
+  // console.log(user);
+  // users[randomID]= req.body.userRandom
+
+
+
+  
+  // console.log(username)
 
 // user get requests and receives "Hello!" as reponse
 
@@ -118,6 +232,9 @@ app.post("/urls",(req,res) => {
   res.redirect("/urls/" + shortURL)
 });
 
+  
+
+
 //updates url resource 
 app.post("/urls/:shortURL/edit",(req, res)=> {
   urlDatabase[req.params.shortURL] = req.body.longURL;
@@ -135,22 +252,30 @@ app.post("/urls/:shortURL/delete",(req,res)=> {
 
 app.post("/login",(req,res)=>{
 
-  res.cookie("username" , req.body.username);
+  if (!emailLookup(req.body.email)) {
+    res.status(403).send("does not exist")
 
+  }else if (!passwordLookup(req.body.password)) {
+    res.status(403).send("error")
+
+    
+  } else {
+
+    res.cookie("username", IDlookup(res.body.email));
+
+  }
+  
   res.redirect("/urls");
+
 })
 
 app.post("/logout",(req,res)=> {
 
-  res.clearCookie("username", req.body.username);
+  res.clearCookie("username",);
 
   res.redirect("/urls");
 })
 
-app.post("/register",(req,res)=> {
-
-
-})
 
 
 
