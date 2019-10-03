@@ -14,8 +14,8 @@
         </div>
       </div>
       <div>
-        <% if (username) { %>
-        <p>Logged in as : <%=username %></p>
+        <% if (user) { %>
+        <p>Logged in as : <%=user.email %></p>
 
         <!-- <% %> -->
 
@@ -25,8 +25,13 @@
         
         <% } else { %>
         <form method="POST" action="/login">
-          <input name="username">
-          <button type="submit">Login</button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-item nav-link" href=/login>Login</a>
+                <a class="nav-item nav-link" href="/Register">Register</a>
+                
+              </div>
+          
         </form>
 
         <% } %>
