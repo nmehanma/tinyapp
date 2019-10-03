@@ -51,6 +51,7 @@ const passwordLookup = function(password) {
 //iDlookup Lookup
 const iDlookup = function(email) {
   for (let user in users) {
+
     if(email  === users[user].email) {
     return users[user].id
     }
@@ -182,14 +183,23 @@ app.get("/login",(req,res)=> {
 
 
 app.post("/login",(req,res)=>{
+  if( req.body.email === "" || req.body.password ==="") {
+    res.status(403).send("strings should not be empty")
+    return
+  }
   if (!emailLookup(req.body.email)) {
     res.status(403).send("does not exist")
+    return
   }else if (!passwordLookup(req.body.password)) {
     res.status(403).send("error")   
+    return
   } else {
-    res.cookie("username", iDlookup(res.body.email));
+    console.log(req.body);
+    res.cookie("username", iDlookup(req.body.email));
+    
+    res.redirect("/urls");
+    return
   }
-   res.redirect("/urls");
    
 });
 
